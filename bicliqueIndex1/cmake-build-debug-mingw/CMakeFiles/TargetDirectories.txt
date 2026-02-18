@@ -1,3 +1,0 @@
-D:/school/second year/First Semester/biclique index/bicliqueIndex1/cmake-build-debug-mingw/CMakeFiles/bicliqueIndex1.dir
-D:/school/second year/First Semester/biclique index/bicliqueIndex1/cmake-build-debug-mingw/CMakeFiles/edit_cache.dir
-D:/school/second year/First Semester/biclique index/bicliqueIndex1/cmake-build-debug-mingw/CMakeFiles/rebuild_cache.dir
