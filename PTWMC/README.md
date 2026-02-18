@@ -35,18 +35,19 @@ make clean
 
 ```bash
 # 只构建极大团索引
-./bIndex.out datasets/graph.txt none _
+./bIndex.out datasets/uai.txt none _
 
 # 构建索引后，根据 add_edges.txt 中的边进行加边维护
-./bIndex.out datasets/graph.txt add datasets/add_edges.txt
+./bIndex.out datasets/uai.txt add datasets/uai_add.txt
 
 # 构建索引后，根据 delete_edges.txt 中的边进行删边维护
-./bIndex.out datasets/graph.txt delete datasets/delete_edges.txt
+./bIndex.out datasets/uai.txt delete datasets/uai_delete.txt
 ```
 
 程序运行过程中会输出：
 - 极大团索引构建时间、退化度等统计信息。
 - 索引（前缀树）占用的内存信息。
 - 在选择 `add` / `delete` 时，对应维护过程的运行时间及维护后的内存信息。
+
 
 
