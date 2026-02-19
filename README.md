@@ -1,54 +1,50 @@
-## 编译
+Build
+In the project root directory (the directory containing MakeFile), run:
 
-在项目根目录（包含 `MakeFile` 的目录）执行：
-
-```bash
+bash
 make
-```
+After successful compilation, the executable file will be generated:
 
-编译成功后会生成可执行文件：
+bIndex.out
 
-- `bIndex.out`
+To clean:
 
-如需清理：
-
-```bash
+bash
 make clean
-```
-## 运行方式
+Usage
+The unified entry point for the executable is:
 
-可执行文件统一入口为：
-
-```bash
+bash
 ./bIndex.out <graph_file_path> <add|delete|none> <edge_update_file_path>
-```
+Parameter Description:
 
-参数说明：
-- `<graph_file_path>`：图数据文件路径。
-- `<add|delete|none>`：维护模式
-  - `add`：在构建极大团索引后，执行一次**加边维护**。
-  - `delete`：在构建极大团索引后，执行一次**删边维护**。
-  - `none`：仅构建极大团索引，不进行任何维护（`edge_update_file_path` 可填任意占位）。
-- `<edge_update_file_path>`：加边 / 删边数据文件路径。
+<graph_file_path>: Path to the graph data file.
 
-示例：
+<add|delete|none>: Maintenance mode
 
-```bash
-# 只构建极大团索引
-./bIndex.out datasets/uai.txt none _
+add: After building the maximal clique index, perform edge addition maintenance once.
 
-# 构建索引后，根据 add_edges.txt 中的边进行加边维护
-./bIndex.out datasets/uai.txt add datasets/uai_add.txt
+delete: After building the maximal clique index, perform edge deletion maintenance once.
 
-# 构建索引后，根据 delete_edges.txt 中的边进行删边维护
-./bIndex.out datasets/uai.txt delete datasets/uai_delete.txt
-```
+none: Only build the maximal clique index without any maintenance ( <edge_update_file_path> can be filled with any placeholder).
 
-程序运行过程中会输出：
-- 极大团索引构建时间、退化度等统计信息。
-- 索引（前缀树）占用的内存信息。
-- 在选择 `add` / `delete` 时，对应维护过程的运行时间及维护后的内存信息。
+<edge_update_file_path>: Path to the edge addition/deletion data file.
 
+Examples:
 
+bash
+# Only build the maximal clique index
+./bIndex.out datasets/graph.txt none _
 
+# Build the index, then perform edge addition maintenance based on edges in add_edges.txt
+./bIndex.out datasets/graph.txt add datasets/add_edges.txt
 
+# Build the index, then perform edge deletion maintenance based on edges in delete_edges.txt
+./bIndex.out datasets/graph.txt delete datasets/delete_edges.txt
+During execution, the program outputs:
+
+Statistics such as maximal clique index construction time and degeneracy.
+
+Memory usage information for the index (prefix tree).
+
+When selecting add / delete, the runtime of the corresponding maintenance process and memory information after maintenance.
