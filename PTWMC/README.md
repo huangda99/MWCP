@@ -1,50 +1,54 @@
-Build
-In the project root directory (the directory containing MakeFile), run:
+Compilation
 
-bash
+In the project root directory (the directory containing the MakeFile), run:
+
 make
-After successful compilation, the executable file will be generated:
+
+
+After successful compilation, the following executable will be generated:
 
 bIndex.out
 
-To clean:
+To clean the project:
 
-bash
 make clean
-Usage
-The unified entry point for the executable is:
 
-bash
+Usage
+
+The executable provides a unified entry point:
+
 ./bIndex.out <graph_file_path> <add|delete|none> <edge_update_file_path>
-Parameter Description:
+
+Parameters
 
 <graph_file_path>: Path to the graph data file.
 
 <add|delete|none>: Maintenance mode
 
-add: After building the maximal clique index, perform edge addition maintenance once.
+add: After building the maximal clique index, perform one edge insertion maintenance.
 
-delete: After building the maximal clique index, perform edge deletion maintenance once.
+delete: After building the maximal clique index, perform one edge deletion maintenance.
 
-none: Only build the maximal clique index without any maintenance ( <edge_update_file_path> can be filled with any placeholder).
+none: Only build the maximal clique index without performing any maintenance (edge_update_file_path can be any placeholder).
 
-<edge_update_file_path>: Path to the edge addition/deletion data file.
+<edge_update_file_path>: Path to the edge insertion/deletion data file.
 
-Examples:
-
-bash
+Examples
 # Only build the maximal clique index
 ./bIndex.out datasets/graph.txt none _
 
-# Build the index, then perform edge addition maintenance based on edges in add_edges.txt
+# Build the index, then perform edge insertion maintenance using edges from add_edges.txt
 ./bIndex.out datasets/graph.txt add datasets/add_edges.txt
 
-# Build the index, then perform edge deletion maintenance based on edges in delete_edges.txt
+# Build the index, then perform edge deletion maintenance using edges from delete_edges.txt
 ./bIndex.out datasets/graph.txt delete datasets/delete_edges.txt
+
+Output
+
 During execution, the program outputs:
 
-Statistics such as maximal clique index construction time and degeneracy.
+Statistics such as maximal clique index construction time and graph degeneracy.
 
-Memory usage information for the index (prefix tree).
+Memory usage of the index (prefix tree).
 
-When selecting add / delete, the runtime of the corresponding maintenance process and memory information after maintenance.
+When add or delete is selected, the runtime of the corresponding maintenance procedure and the memory usage after maintenance.
