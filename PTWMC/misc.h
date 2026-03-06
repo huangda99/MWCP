@@ -9,6 +9,7 @@
 #include"degeneracy_helper.h"
 #include"degeneracy_algorithm_cliques_A.h"
 #include <unordered_map>
+#include <vector>
 //#include"degeneracy_algorithm_cliques_V.h"
 //#include"degeneracy_algorithm_cliques_E.h"
 
@@ -40,7 +41,7 @@ void destroyCliqueResults(LinkedList* cliques);
 LinkedList** readInGraphAdjList(int* n, int* m);
 
 LinkedList** readInGraphAdjListToDoubleEdges(int* n, int* m, char *fpath);
-LinkedList** readInGraphAdjListToDoubleEdges_ew(int* n, int* m, char *fpath, std::unordered_map<std::pair<int, int>, float, pair_hash> &edgeWeight);
+LinkedList** readInGraphAdjListToDoubleEdges_ew(int* n, int* m, char *fpath, std::unordered_map<std::pair<int, int>, float, pair_hash> &edgeWeight, std::vector<float> &vertexWeight);
 
 
 
