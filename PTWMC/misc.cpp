@@ -345,76 +345,124 @@ LinkedList** readInGraphAdjListToDoubleEdges(int* n, int* m, char *fpath)
 }
 
 
-LinkedList** readInGraphAdjListToDoubleEdges_ew(int* n, int* m, char *fpath, std::unordered_map<std::pair<int, int>, float, pair_hash> &edgeWeight)
-{
-    int u, v; // endvertices, to read edges.
 
+
+LinkedList** readInGraphAdjListToDoubleEdges_ew(int* n, int* m, char *fpath, std::unordered_map<std::pair<int, int>, float, pair_hash> &edgeWeight, std::vector<float> &vertexWeight)
+{
     FILE *fp;
-    fp = fopen (fpath,"r");
+    fp = fopen(fpath, "r");
     if (!fp)
     {
         fprintf(stderr, "Could not open input file.\n");
         exit(1);
     }
 
-    //printf("=====");
+    int num_edges = 0;
+    char line[512];
+    int got_p = 0;
 
-    if(fscanf(fp, "%d %d", n, m)!=2)
+    while (fgets(line, (int)sizeof(line), fp) != NULL)
     {
-        fprintf(stderr, "Number of vertices: %d\n", *n);
-        fprintf(stderr, "Number of edges: %d\n", *m);
-        fprintf(stderr, "problem with line 1 in input file\n");
+        if (line[0] == 'c' || line[0] == 'C' || line[0] == '\n' || line[0] == '\r')
+            continue;
+        if (line[0] == 'p')
+        {
+            if (sscanf(line, "p edge %d %d", n, &num_edges) != 2)
+            {
+                fprintf(stderr, "Invalid 'p' line in DIMACS file, expected: p edge <n> <m>\n");
+                fclose(fp);
+                exit(1);
+            }
+            got_p = 1;
+            break;
+        }
+        fprintf(stderr, "Expected 'p' or 'c' line, got line starting with '%c'\n", line[0]);
+        fclose(fp);
         exit(1);
     }
+
+    if (!got_p)
+    {
+        fprintf(stderr, "DIMACS file missing 'p edge <n> <m>' line.\n");
+        fclose(fp);
+        exit(1);
+    }
+
+    *m = num_edges;
     printf("vertices: %d, edges: %d\n", *n, *m);
+
+    vertexWeight.resize((size_t)*n, 0.0f);
+
     LinkedList** adjList = (LinkedList**)Calloc(*n, sizeof(LinkedList*));
-    //edgeWeight.reserve(*m);
     int i = 0;
-    //printf("=====");
-    while(i < *n)
+    while (i < *n)
     {
         adjList[i] = createLinkedList();
         i++;
     }
-    //printf("=====");
-    i = 0;
+
+    int u, v;
     float w;
-    // double maxv = 0;
-    while(i < *m)
+    int edges_read = 0;
+
+    while (fgets(line, (int)sizeof(line), fp) != NULL)
     {
-        if (fscanf(fp, "%d %d %f\n", &u, &v, &w)!=3)
+        if (line[0] == 'e' || line[0] == 'E')
         {
-            printf("problem with line %d in input file, u=%d, v=%d\n", i+2, u, v);
-            exit(1);
+            int ret = sscanf(line + 1, "%d %d %f", &u, &v, &w);
+            if (ret < 2)
+            {
+                fprintf(stderr, "Invalid 'e' line in DIMACS file: %s", line);
+                fclose(fp);
+                exit(1);
+            }
+            u--;
+            v--;
+            if (u < 0 || u >= *n || v < 0 || v >= *n)
+            {
+                fprintf(stderr, "Vertex id out of range: u=%d v=%d (n=%d)\n", u + 1, v + 1, *n);
+                fclose(fp);
+                exit(1);
+            }
+            if (u == v)
+            {
+                fprintf(stderr, "Self-loop not allowed: vertex %d\n", u + 1);
+                fclose(fp);
+                exit(1);
+            }
+            if (ret == 3)
+                edgeWeight[std::make_pair(u, v)] = w;
+            addLast(adjList[u], (int)v);
+            addLast(adjList[v], (int)u);
+            edges_read++;
         }
-        // if ((u>= *n) || (v >= *n)) printf("u = %d, v = %d \n", u, v);
-        // if ((double) u > maxv) maxv = (double) u;
-        // if ((double) v > maxv) maxv = (double) v;
-        assert(u < *n && u > -1);
-        assert(v < *n && v > -1);
-//        if (u == v){
-//            printf("%d ,%d ", u, v);
-//        }
-        assert(u != v);
-        std::pair<int, int> edge = std::make_pair(u, v);
-
-        ////edgeWeight.insert({edge, w});
-//        printf("w:%f ", w);
-//        printf("ew:%f ",edgeWeight[edge]);
-//        printf("\n");
-        addLast(adjList[u], (int)v);
-        addLast(adjList[v], (int)u);
-
-        i++;
+        else if (line[0] == 'n' || line[0] == 'N')
+        {
+            int id;
+            float vw;
+            if (sscanf(line + 1, "%d %f", &id, &vw) != 2)
+            {
+                fprintf(stderr, "Invalid 'n' line in DIMACS file: %s", line);
+                fclose(fp);
+                exit(1);
+            }
+            id--;
+            if (id < 0 || id >= *n)
+            {
+                fprintf(stderr, "Vertex id out of range in 'n' line: %d (n=%d)\n", id + 1, *n);
+                fclose(fp);
+                exit(1);
+            }
+            vertexWeight[(size_t)id] = vw;
+        }
     }
 
-//    for (auto e : edgeWeight) {
-//        printf("%f ", edgeWeight[e.first]);
-//    }
+    if (edges_read != num_edges)
+    {
+        fprintf(stderr, "Warning: expected %d edges, read %d edges from file.\n", num_edges, edges_read);
+    }
 
-    //printf("maxv = %lf \n", maxv);
-    *m = (*m) * 2;
-    //printf("=====");
+    *m = num_edges * 2;
     fclose(fp);
     return adjList;
 }
