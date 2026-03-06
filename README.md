@@ -137,7 +137,7 @@ No external libraries beyond the C++ standard library are required.
 
 ---
 
-## Methodology (if applicable)
+## Methodology
 
 1. **Graph loading**: The graph is read from the input file in DIMACS format into an adjacency list with edge and vertex weights.
 2. **Degeneracy ordering**: A degeneracy ordering of the vertices is computed; this ordering is used to bound the search space during clique enumeration.
