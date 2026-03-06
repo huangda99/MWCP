@@ -1045,6 +1045,7 @@ int findBestPivotNonNeighborsDegeneracyCliques( int** pivotNonNeighbors, int* nu
 
     \param pNewBeginR After function, contains the new index where set R begins
                       in vertexSets after adding vertex to R.
+*/
 
 void fillInPandXForRecursiveCallDegeneracyCliques( int vertex, int orderNumber,
                                                    int* vertexSets, int* vertexLookup,
