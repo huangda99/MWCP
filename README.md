@@ -1,6 +1,5 @@
 # Efficient Computation of Maximum Weighted Clique in Dynamic Weighted Graph
 
-## Title
 
 ## Description
 
