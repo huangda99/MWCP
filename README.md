@@ -1,6 +1,5 @@
 # Efficient Computation of Maximum Weighted Clique in Dynamic Weighted Graph
 
-
 ## Description
 
 Maximum weighted clique has important applications in social network analysis, bioinformatics, computer vision, and pattern recognition. Existing studies mainly focus on static weighted graphs. However, in real-world scenarios, graph structures often evolve over time (e.g., formation and dissolution of user relationships, changes in protein interactions, frequent updates in transaction networks). In such dynamic graphs, traditional static algorithms incur high computational costs and fail to meet real-time and scalability requirements.
@@ -137,7 +136,7 @@ No external libraries beyond the C++ standard library are required.
 
 ---
 
-## Methodology
+## Methodology 
 
 1. **Graph loading**: The graph is read from the input file in DIMACS format into an adjacency list with edge and vertex weights.
 2. **Degeneracy ordering**: A degeneracy ordering of the vertices is computed; this ordering is used to bound the search space during clique enumeration.
@@ -146,3 +145,21 @@ No external libraries beyond the C++ standard library are required.
 5. **Edge insertion maintenance**: For a new edge (u,v), the code identifies affected branches in the prefix tree, computes new maximal cliques that include (u,v), and updates the tree accordingly.
 6. **Edge deletion maintenance**: For a removed edge (u,v), the code identifies branches containing both u and v, derives updated maximal cliques after the deletion, and prunes/updates the prefix tree.
 7. **Weighted clique computation**: By mapping edge weights to vertex weights, the framework supports both maximum vertex-weighted clique and maximum edge-weighted clique in a unified manner.
+
+---
+
+## Citations
+
+This work is currently under submission. A formal citation will be provided once the paper is accepted.
+
+---
+
+## License
+
+MIT License. See the LICENSE file for details.
+
+---
+
+## Contribution Guidelines
+
+Contributions are welcome. Please open an issue to report bugs, propose improvements, or discuss potential changes before submitting a pull request.
